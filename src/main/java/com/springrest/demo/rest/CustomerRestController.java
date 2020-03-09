@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import main.java.com.springrest.demo.entity.Customer;
 import main.java.com.springrest.demo.service.CustomerService;
+import main.utilities.CustomerNotFoundException;
 
 @RestController
 @RequestMapping("/api")
@@ -30,7 +31,11 @@ public class CustomerRestController {
 	@GetMapping("/customers/{customerId}")
 	public Customer getCustomers(@PathVariable int customerId){
 		
-		return customerService.getCustomer(customerId);
+		Customer theCustomer = customerService.getCustomer(customerId);
+		
+		if( theCustomer ==null) {
+			throw new CustomerNotFoundException("the customer id not found for " +customerId);
+		}
+		return theCustomer;
 	}
-	
 }
