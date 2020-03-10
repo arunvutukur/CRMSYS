@@ -3,6 +3,7 @@ package main.java.com.springrest.demo.rest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +46,7 @@ public class CustomerRestController {
 	  }	 
 	  
 	  
-	//Post Mapping for add new customer
+	//Post Mapping for add new customer	
 	  @PostMapping("/customers")
 	  public Customer addCustomer(@RequestBody Customer theCustomer) {
 		  
@@ -76,7 +77,23 @@ public class CustomerRestController {
 	 */
 	  
 	  
-	  
+	//Delete Mapping for update a customer
+	//DELETE/customers/customer{id}
+	  @DeleteMapping("/customers/{customerId}")
+	  public String deleteCustomer(@PathVariable int customerId) {	
+		  
+		  //Use an exception here in case if the id is out of bounds --->safe practice
+		  
+		  Customer theCustomer = customerService.getCustomer(customerId);
+		/*
+		 * if (theCustomer == null) { throw new
+		 * CustomerNotFoundException("Customer id not found - " + customerId); }
+		 */  
+	  	
+		  customerService.deleteCustomer(customerId);
+		   
+		  return "Deleted Customer id -" +customerId; 
+	  }
 	  
 	  
 }
