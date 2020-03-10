@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,6 +58,24 @@ public class CustomerRestController {
 		   
 		   return theCustomer;
 	  }
+	  
+	  //Put Mapping for update a customer
+	  @PutMapping("/customers")
+	  public Customer updateCustomer(@RequestBody Customer theCustomer) {		  
+	  	
+		   customerService.saveCustomer(theCustomer);		   
+		   return theCustomer;
+	  }
+	//use customer here and check what would be the output
+	/*
+	 * 
+	 * @PutMapping("/customer") public Customer updateCustomer(@RequestBody
+	 * Customer theCustomer) {
+	 * 
+	 * customerService.saveCustomer(theCustomer); return theCustomer; }
+	 */
+	  
+	  
 	  
 	  
 	  
