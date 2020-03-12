@@ -24,6 +24,14 @@ public class CustomerRestController {
 	@Autowired
 	private CustomerService customerService;
 	
+	@GetMapping("/")
+	public String showHome() {
+		
+		return "home";
+	}
+	
+	
+	
 	//Add Mapping for GET /customers
 	@GetMapping("/customers")
 	public List<Customer> getCustomers(){
@@ -94,6 +102,8 @@ public class CustomerRestController {
 		   
 		  return "Deleted Customer id -" +customerId; 
 	  }
+	  
+	 
 	  
 	  
 }

@@ -15,6 +15,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -27,9 +32,10 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
+@EnableWebSecurity
 @ComponentScan("main.java.com.springrest.demo")
 @PropertySource({ "classpath:persistence-mysql.properties" })
-public class DemoAppConfig implements WebMvcConfigurer {
+public class DemoAppConfig  extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
 	@Autowired
 	private Environment env;
@@ -118,7 +124,32 @@ public class DemoAppConfig implements WebMvcConfigurer {
 		txManager.setSessionFactory(sessionFactory);
 
 		return txManager;
-	}	
+	}
+	
+	//It will look for the page->jsp
+	
+	@Bean
+	public ViewResolver viewResolver() {		
+		
+		InternalResourceViewResolver viewResolver =new InternalResourceViewResolver();
+		viewResolver.setSuffix("/WEB-INF/view/");
+		viewResolver.setSuffix(".jsp");		
+		return viewResolver;			
+	}
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		
+		//super.configure(auth);
+		
+		//Add our users for in memory authentication
+		
+		UserBuilder users =User.withDefaultPasswordEncoder();
+		auth.inMemoryAuthentication()
+			.withUser(users.username("john").password("abcd").roles("GUEST"))
+			.withUser(users.username("abbas").password("abcd").roles("MGR"));		
+	}
+	
 	
 }
 
